@@ -30,7 +30,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // REST APIs should be stateless
                 .authorizeHttpRequests(auth -> auth
                         // Explicitly allow POST requests to this exact URL
-                        .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users/register","/api/users/login").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();
