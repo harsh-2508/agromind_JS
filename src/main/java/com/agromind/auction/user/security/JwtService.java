@@ -23,13 +23,26 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+//    method-1) used to generate token
     public String generateToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getEmail()) // The main identifier
                 .claim("role", user.getRole().name()) // Add custom data like role
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-                .compact();
+                .setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)).signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
     }
+
+//    method-2) to read the generated token = Extracts the email (subject) from the token
+    public String extractUsername(String token){
+        return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody().getSubject();
+    }
+
+    // Checks if the token belongs to the user and is not expired
+    public boolean isTokenValid(String token,User user){
+        final String username=extractUsername(token);
+        return (username.equals(user.getEmail()) && !isTokenExpired(token));
+    }
+    private boolean isTokenExpired(String token){
+        return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody().getExpiration().before(new Date());
+    }
+
 }

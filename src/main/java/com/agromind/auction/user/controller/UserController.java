@@ -26,4 +26,9 @@ public class UserController {
         AuthResponse response=userService.loginUser(request);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/profile")
+    public ResponseEntity<String> getProfile(){
+        return ResponseEntity.ok("Welcome to the secret profile area! Your JWT works perfectly.");
+    }
 }
