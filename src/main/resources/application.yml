@@ -17,10 +17,17 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.PostgreSQLDialect
 
   # Disable default Spring Security password generation for now
   security:
     user:
       name: admin
       password: admin
+
+  # ... (your existing database and security settings)
+
+gemini:
+  api:
+    key: ${GEMINI_API_KEY}
+
+
